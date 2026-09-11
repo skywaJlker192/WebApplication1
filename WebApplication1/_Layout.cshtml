@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Админ-панель</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <header class="bg-dark text-white p-3 mb-4">
+        <div class="container d-flex justify-content-between">
+            <h3>Админ-панель</h3>
+            <nav>
+                <a href="/" class="text-white me-3">Дашборд</a>
+                <a href="/Settings" class="text-white">Настройки</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        @* Условная проверка секции PageHeader *@
+        @if (IsSectionDefined("PageHeader"))
+        {
+            @await RenderSectionAsync("PageHeader", required: false)
+        }
+        else
+        {
+            <h2 class="mb-4">Панель управления</h2>
+        }
+
+        @RenderBody()
+    </div>
+
+    <footer class="bg-light text-center p-3 mt-5">
+        <p>&copy; @DateTime.Now.Year Админ-панель</p>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
