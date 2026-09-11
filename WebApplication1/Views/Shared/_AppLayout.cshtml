@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+        <div class="col-md-3">
+            @await Component.InvokeAsync("TrendSummary")
+        </div>
+    </div>
+</div>
+
+@RenderSection("PageHeader", required: false)
+@RenderSection("Scripts", required: false)

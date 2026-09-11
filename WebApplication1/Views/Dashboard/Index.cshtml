@@ -1,0 +1,84 @@
+﻿@model IEnumerable<DashboardCard>
+
+@{
+    Layout = "_AppLayout";
+    ViewData["Title"] = "Дашборд";
+    
+    // Блок инициализации переменных
+    var totalValue = Model.Sum(c => c.Value);
+    var cardCount = Model.Count();
+    int i = 0;
+}
+
+@* Razor-комментарий *@
+@* Данные за период из контроллера *@
+<!-- Админ-дашборд v1.0 -->
+
+@section PageHeader {
+    <div class="mb-4">
+        <h2>Дашборд</h2>
+        <p class="lead">
+            @cardCount показателей, сумма: @totalValue @ViewBag.Currency 
+            <br />
+            <small class="text-muted">Отчетный период: @ViewData["ReportPeriod"]</small>
+        </p>
+    </div>
+}
+
+@functions {
+    string GetTrendLabel(Trend t)
+    {
+        return t switch
+        {
+            Trend.Up => "Рост ↑",
+            Trend.Down => "Снижение ↓",
+            _ => "Стабильно →"
+        };
+    }
+}
+
+<div class="row">
+    @foreach (var card in Model)
+    {
+        // Перенос строки каждые 3 карточки
+        if (i > 0 && i % 3 == 0)
+        {
+            @:</div><div class="row">
+        }
+
+        <div class="col-md-4 mb-3">
+            @* Показываем оба подхода: первые 3 инлайном, остальные через Partial *@
+            @if (i < 3)
+            {
+                <div class="card p-3 border-primary">
+                    <h5>@card.Title (Inline)</h5>
+                    <p class="fs-4">@card.Value @card.Unit</p>
+                    <p>Тренд: @GetTrendLabel(card.Trend)</p>
+                    @if (card.Value < 0)
+                    {
+                        <span class="badge bg-danger">Отрицательное значение</span>
+                    }
+                    <p class="text-muted small">@card.Description</p>
+                </div>
+            }
+            else
+            {
+                @await Html.PartialAsync("_DashboardCard", card)
+            }
+        </div>
+
+        i++;
+    }
+</div>
+
+<hr class="my-4" />
+
+<div class="alert alert-info">
+    <h5>Сводка</h5>
+    <p class="mb-1">Всего карточек: @cardCount</p>
+    <p class="mb-0">Сумма значений: @totalValue</p>
+</div>
+
+@section Scripts {
+    @* Сюда можно подключить специфичные для страницы скрипты *@
+}

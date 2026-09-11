@@ -1,0 +1,20 @@
+﻿@model IEnumerable<dynamic>
+
+<h6>Сводка по трендам</h6>
+@if (Model != null && Model.Any())
+{
+    <ul class="list-unstyled">
+        @foreach (var item in Model)
+        {
+            <li class="mb-2">
+                <strong>@item.TrendName:</strong>
+                <span>@item.Count шт.</span> |
+                <span>Сумма: @item.Sum</span>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Нет данных</p>
+}

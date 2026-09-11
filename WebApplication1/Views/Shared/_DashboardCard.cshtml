@@ -1,0 +1,38 @@
+﻿@model DashboardCard
+
+@functions {
+    string GetTrendLabel(Trend t)
+    {
+        return t switch
+        {
+            Trend.Up => "Рост",
+            Trend.Down => "Снижение",
+            _ => "Стабильно"
+        };
+    }
+
+    // Бонусное задание (Лёгкий уровень)
+    string GetValueClass(decimal value)
+    {
+        if (value < 0) return "Отрицательное";
+        if (value > 0 && value < 1000) return "Низкое";
+        if (value >= 1000 && value <= 10000) return "Среднее";
+        return "Высокое";
+    }
+}
+
+<div class="card mb-3 p-3 border">
+    <h5>@Model.Title</h5>
+    <p class="fs-4">
+        @Model.Value @Model.Unit
+        <span class="badge bg-secondary ms-2">@GetValueClass(Model.Value)</span>
+    </p>
+    <p>Тренд: @GetTrendLabel(Model.Trend)</p>
+
+    @if (Model.Value < 0)
+    {
+        <span class="badge bg-danger">Отрицательное значение</span>
+    }
+
+    <p class="text-muted small">@Model.Description</p>
+</div>
